@@ -40,5 +40,5 @@ jobs:
       - name: Step 4 - Check target folder
         run:
           cd target
-          ls -a
+          ls
   
