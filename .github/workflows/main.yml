@@ -38,7 +38,7 @@ jobs:
         run: mvn -B package --file pom.xml
         
       - name: Step 4 - Check target folder
-        run:
+        run: |
           cd target
-          ls
+          ls -a
   
