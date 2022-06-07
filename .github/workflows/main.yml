@@ -30,7 +30,7 @@ jobs:
               "id": "maven-default-http-blocker", 
               "name": "Pseudo repository to mirror external repositories initially using HTTP.",
               "mirrorOf": "external:https:*", 
-              "url": ">https://0.0.0.0/",
+              "url": "https://0.0.0.0/",
               "blocked": "false"
             }]
           
