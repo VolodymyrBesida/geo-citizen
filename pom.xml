@@ -45,10 +45,12 @@
         <slf4j.version>1.7.25</slf4j.version>
         <logback.version>1.2.3</logback.version>
         <liquibase.version>4.4.3</liquibase.version>
-	<!--<quarkus-plugin.version>1.12.0.Final</quarkus-plugin.version>
+	<!--
+	<quarkus-plugin.version>1.12.0.Final</quarkus-plugin.version>
     	<quarkus.platform.artifact-id>quarkus-universe-bom</quarkus.platform.artifact-id>
     	<quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-    	<quarkus.platform.version>1.12.0.Final</quarkus.platform.version>-->
+    	<quarkus.platform.version>1.12.0.Final</quarkus.platform.version>
+	-->
 	    <mapstruct.version>1.2.0.Final</mapstruct.version>
 	    <javax.validation.version>2.0.1.Final</javax.validation.version>
 	    <guava.version>23.6-jre</guava.version>
@@ -293,14 +295,14 @@
 	<dependency>
     		<groupId>io.quarkus</groupId>
     		<artifactId>quarkus-liquibase</artifactId>
-    		<version>1.11</version>
+    		<version>1.11.0.Final</version>
 	</dependency>
 
     	<!-- JDBC driver dependencies -->
 	<dependency>
     		<groupId>io.quarkus</groupId>
     		<artifactId>quarkus-jdbc-postgresql</artifactId>
-    		<version>1.11</version>
+    		<version>1.11.0.Final</version>
 	</dependency>
 	    <!--MapStruct-->
 	    <dependency>
