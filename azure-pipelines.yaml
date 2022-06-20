@@ -1,0 +1,128 @@
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: validate
+    jobs:
+      - job: validate
+        continueOnError: false
+        steps:
+        - checkout: self
+
+        - task: TerraformInstaller@0
+          displayName: 'install'
+          inputs:
+            terraformVersion: 'latest'
+
+        - task: TerraformTaskV3@3
+          displayName: 'init'
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+            backendServiceArm: 'TopConnection'
+            backendAzureRmResourceGroupName: 'geo-group'
+            backendAzureRmStorageAccountName: 'citizentorage'
+            backendAzureRmContainerName: 'tfstate'
+            backendAzureRmKey: '$(tf-key)'
+
+        - task: TerraformTaskV3@3
+          displayName: 'validate'        
+          inputs:
+            provider: 'azurerm'
+            command: 'validate'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+
+  - stage: deploy_terraform
+    jobs:
+      - deployment: deploy_terraform
+        continueOnError: false
+        environment: 'dev'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - task: TerraformInstaller@0
+                  displayName: 'install'
+                  inputs:
+                    terraformVersion: 'latest'
+                - task: TerraformTaskV3@3
+                  displayName: 'init'
+                  inputs:
+                    provider: 'azurerm'
+                    command: 'init'
+                    workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+                    backendServiceArm: 'TopConnection'
+                    backendAzureRmResourceGroupName: 'geo-group'
+                    backendAzureRmStorageAccountName: 'citizentorage'
+                    backendAzureRmContainerName: 'tfstate'
+                    backendAzureRmKey: '$(tf-key)'
+
+                - task: TerraformTaskV3@3
+                  displayName: 'plan'
+                  inputs:
+                    provider: 'azurerm'
+                    workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+                    command: 'plan'
+                    environmentServiceNameAzureRM: 'TopConnection'
+
+
+                - task: TerraformTaskV3@3
+                  displayName: 'apply'
+                  inputs:
+                    provider: 'azurerm'
+                    command: 'apply'
+                    workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+                    environmentServiceNameAzureRM: 'TopConnection'
+
+  - stage: build_project
+    jobs:
+      - job: build_project
+        continueOnError: false
+        steps:
+          - task: Maven@3
+            inputs:
+              mavenPomFile: 'pom.xml'
+              mavenOptions: '-Xmx3072m'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: '1.8'
+              jdkArchitectureOption: 'x64'
+              goals: 'package'
+
+          - task: CopyFiles@2
+            displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+            inputs:
+              SourceFolder: '$(System.DefaultWorkingDirectory)'
+              Contents: '**/*.jar'
+              TargetFolder: '$(Build.ArtifactStagingDirectory)'
+            condition: succeededOrFailed()
+
+          - task: PublishBuildArtifacts@1
+            displayName: publish artifact
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
+
+  - stage: publishing_artifact_to_web_app
+    jobs:
+      - job: publishing
+        continueOnError: false
+        steps:
+          - task: DownloadBuildArtifacts@1
+            displayName: Download artifact
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: 'drop'
+              downloadPath: '$(Build.ArtifactStagingDirectory)'
+
+          - task: AzureRmWebAppDeployment@4
+            displayName: Upload the artifact
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'TopConnection'
+              appType: 'webAppLinux'
+              WebAppName: 'web-geo-citizen'
+              packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.jar'
