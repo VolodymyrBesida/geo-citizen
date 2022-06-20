@@ -125,4 +125,4 @@ stages:
               azureSubscription: 'TopConnection'
               appType: 'webAppLinux'
               WebAppName: 'web-geo-citizen'
-              packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.jar'
+              packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.zip'
