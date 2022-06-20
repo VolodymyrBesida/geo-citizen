@@ -125,4 +125,4 @@ stages:
               azureSubscription: 'TopConnection'
               appType: 'webAppLinux'
               WebAppName: 'web-geo-citizen'
-              packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+              packageForLinux: '/home/vsts/work/1/a/target/dependency/webapp-runner.jar'
