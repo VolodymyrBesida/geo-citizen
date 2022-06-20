@@ -125,4 +125,4 @@ stages:
               azureSubscription: 'TopConnection'
               appType: 'webAppLinux'
               WebAppName: 'web-geo-citizen'
-              packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.war'
+              packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
