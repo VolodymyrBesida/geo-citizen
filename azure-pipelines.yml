@@ -127,5 +127,5 @@ stages:
               WebAppName: 'web-geo-citizen'
               ResourceGroupName: 'geo-group'
               deployToSlotOrASE: true
-              packageForLinux: '/home/vsts/work/1/s/target/citizen.war'
+              packageForLinux: '/home/vsts/work/1/a/target/citizen.war'
               RuntimeStack: 'TOMCAT|9.0-jre8'
