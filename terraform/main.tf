@@ -44,7 +44,7 @@ terraform {
         }
     }
 
-    resource "azurerm_resource_group" "geo-group-additional" {
+    resource "azurerm_resource_group" "geo-group-additional-resource" {
         name     = "geo-group-additional-resource"
         location = "Central US"
 
@@ -58,8 +58,8 @@ terraform {
 # storage account
     resource "azurerm_storage_account" "storage-account" {
         name                     = module.naming.storage_account.name_unique
-        resource_group_name      = azurerm_resource_group.geo-group-additional.name
-        location                 = azurerm_resource_group.geo-group-additional.location
+        resource_group_name      = azurerm_resource_group.geo-group-additional-resource.name
+        location                 = azurerm_resource_group.geo-group-additional-resource.location
         account_tier             = "Standard"
         account_replication_type = "LRS"
 
@@ -79,8 +79,8 @@ terraform {
 # service plan
     resource "azurerm_service_plan" "app-plan" {
         name                = var.service_plan_name
-        resource_group_name = azurerm_resource_group.geo-group-additional.name
-        location            = azurerm_resource_group.geo-group-additional.location
+        resource_group_name = azurerm_resource_group.geo-group-additional-resource.name
+        location            = azurerm_resource_group.geo-group-additional-resource.location
         os_type             = var.service_plan_os_type
         sku_name            = var.service_plan_sku_name
 
@@ -129,7 +129,7 @@ terraform {
 # web app
     resource "azurerm_linux_web_app" "webapp" {
         name                = var.webapp_name
-        resource_group_name = azurerm_resource_group.geo-group-additional.name
+        resource_group_name = azurerm_resource_group.geo-group-additional-resource.name
         location            = "Central US"
         service_plan_id     = azurerm_service_plan.app-plan.id
 
