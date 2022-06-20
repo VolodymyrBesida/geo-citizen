@@ -23,7 +23,7 @@ stages:
             backendServiceArm: 'TopConnection'
             backendAzureRmResourceGroupName: 'geo-group'
             backendAzureRmStorageAccountName: 'citizentorage'
-            backendAzureRmContainerName: 'tfstate'
+            backendAzureRmContainerName: 'tfstates'
             backendAzureRmKey: '$(tf-key)'
 
         - task: TerraformTaskV3@3
@@ -56,7 +56,7 @@ stages:
                     backendServiceArm: 'TopConnection'
                     backendAzureRmResourceGroupName: 'geo-group'
                     backendAzureRmStorageAccountName: 'citizentorage'
-                    backendAzureRmContainerName: 'tfstate'
+                    backendAzureRmContainerName: 'tfstates'
                     backendAzureRmKey: '$(tf-key)'
 
                 - task: TerraformTaskV3@3
