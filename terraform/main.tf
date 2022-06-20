@@ -45,7 +45,7 @@ terraform {
     }
 
     resource "azurerm_resource_group" "geo-group-additional" {
-        name     = "geo-group-additional"
+        name     = "geo-group-additional-resource"
         location = "Central US"
 
         tags = {
