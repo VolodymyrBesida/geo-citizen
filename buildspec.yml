@@ -9,4 +9,4 @@ phases:
       - mvn clean install
 artifacts:
   files:
-    - target/citizen.war
+    - /**/citizen.war
