@@ -6,7 +6,7 @@ phases:
       java: corretto8
   build:
     commands:
-      - mvn clean install
+      - mvn install
 artifacts:
   files:
-    - /**/citizen.war
+    - citizen.war
